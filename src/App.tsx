@@ -84,7 +84,7 @@ const App: React.FC = () => {
 
       {/* Floating Audio Mute Button */}
       <motion.button
-        className="fixed top-6 right-6 z-[100] w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors shadow-lg"
+        className="fixed right-4 top-4 z-[100] h-11 w-11 rounded-full border border-white/20 bg-white/10 shadow-lg backdrop-blur-md transition-colors hover:bg-white/20 sm:right-6 sm:top-6 sm:h-12 sm:w-12 flex items-center justify-center"
         onClick={toggleAudio}
         title={isMuted ? 'Unmute music' : 'Mute music'}
         initial={{ opacity: 0 }}

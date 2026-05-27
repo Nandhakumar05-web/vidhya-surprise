@@ -23,9 +23,12 @@ const wishes = [
   }
 ];
 
+const getIsCompact = () => typeof window !== 'undefined' && window.innerWidth < 768;
+
 export const Wishes: React.FC = () => {
   const unlockNext = useAppStore((state) => state.unlockNext);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isCompact, setIsCompact] = React.useState(getIsCompact);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -34,16 +37,23 @@ export const Wishes: React.FC = () => {
 
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
 
+  React.useEffect(() => {
+    const handleResize = () => setIsCompact(getIsCompact());
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <motion.section
       ref={containerRef}
-      className="relative h-[200vh] bg-[#0a0514]"
+      className="relative min-h-[100dvh] bg-[#0a0514] md:h-[200vh]"
       initial={{ opacity: 0, filter: 'blur(10px)' }}
       animate={{ opacity: 1, filter: 'blur(0px)' }}
       exit={{ opacity: 0, scale: 1.05, filter: 'blur(15px)' }}
       transition={{ duration: 1.4, ease: [0.19, 1, 0.22, 1] }}
     >
-      <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden py-20">
+      <div className="relative md:sticky top-0 min-h-[100dvh] md:h-screen flex flex-col items-center justify-center overflow-visible md:overflow-hidden py-24 md:py-20">
 
         {/* Background glow */}
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
@@ -51,18 +61,18 @@ export const Wishes: React.FC = () => {
         </div>
 
         <motion.div
-          className="text-center z-20 mb-20 px-4"
+          className="text-center z-20 mb-10 md:mb-20 px-4"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
         >
-          <h2 className="text-4xl md:text-6xl font-serif text-glow-lavender mb-4">Heartfelt Wishes</h2>
-          <p className="text-white/60 font-light tracking-widest uppercase text-sm">Scroll to read</p>
+          <h2 className="text-[clamp(2.4rem,11vw,4rem)] md:text-6xl font-serif text-glow-lavender mb-4 leading-tight">Heartfelt Wishes</h2>
+          <p className="text-white/60 font-light tracking-widest uppercase text-xs sm:text-sm">{isCompact ? 'Read with love' : 'Scroll to read'}</p>
         </motion.div>
 
-        <div className="w-full overflow-hidden flex items-center relative z-20">
-          <motion.div style={{ x }} className="flex gap-8 px-[10vw] md:px-[30vw] min-w-max pb-12">
+        <div className="w-full overflow-visible md:overflow-hidden flex items-center relative z-20">
+          <motion.div style={{ x: isCompact ? 0 : x }} className="flex w-full flex-col items-center gap-5 px-4 pb-8 md:w-auto md:flex-row md:items-stretch md:gap-8 md:px-[30vw] md:min-w-max md:pb-12">
             {wishes.map((wish, i) => (
               <motion.div
                 key={i}
@@ -73,7 +83,7 @@ export const Wishes: React.FC = () => {
               >
                 <GlassCard
                   glow
-                  className="w-[300px] md:w-[450px] h-[400px] p-8 flex flex-col justify-between premium-3d-card"
+                  className="w-full max-w-[360px] md:w-[450px] md:max-w-none min-h-[300px] md:h-[400px] p-6 md:p-8 flex flex-col justify-between premium-3d-card"
                 >
                   <div className="flex justify-between items-start mb-8">
                     {wish.icon}
@@ -82,7 +92,7 @@ export const Wishes: React.FC = () => {
                     </div>
                   </div>
 
-                  <p className="text-2xl md:text-3xl font-serif text-white/90 leading-relaxed italic mb-8">
+                  <p className="text-xl sm:text-2xl md:text-3xl font-serif text-white/90 leading-relaxed italic mb-8">
                     "{wish.text}"
                   </p>
 
@@ -98,7 +108,7 @@ export const Wishes: React.FC = () => {
         </div>
 
         <motion.div
-          className="mt-12 z-20"
+          className="mt-6 md:mt-12 z-20 px-4"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.8 }}

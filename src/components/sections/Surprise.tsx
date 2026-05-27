@@ -3,7 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, Float, ContactShadows, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
-import { motion, AnimatePresence, useAnimationFrame, useMotionValue, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useAnimationFrame, useMotionValue, useTransform, type MotionValue } from 'framer-motion';
 import { useAppStore } from '../../store/useAppStore';
 import { CinematicButton } from '../ui/CinematicButton';
 
@@ -20,7 +20,11 @@ const images = [
   '/photo12.jpg',
 ];
 
-const CarouselCard = ({ index, image, angleObj, onSelect }: { index: number, image: string, angleObj: any, onSelect: (img: string) => void }) => {
+const getCarouselRadius = () => (
+  typeof window !== 'undefined' && window.innerWidth < 768 ? 360 : 700
+);
+
+const CarouselCard = ({ index, image, angleObj, radius, onSelect }: { index: number, image: string, angleObj: MotionValue<number>, radius: number, onSelect: (img: string) => void }) => {
   const cardAngle = index * 36;
   
   const scale = useTransform(angleObj, (val: number) => {
@@ -61,17 +65,17 @@ const CarouselCard = ({ index, image, angleObj, onSelect }: { index: number, ima
 
   return (
     <div 
-      className="absolute top-1/2 left-1/2 -mt-[175px] -ml-[125px]"
+      className="absolute top-1/2 left-1/2 -mt-[115px] -ml-[75px] md:-mt-[175px] md:-ml-[125px]"
       style={{ 
         transform: `rotateY(${cardAngle}deg)`, 
         transformStyle: 'preserve-3d' 
       }}
     >
       <motion.div
-        className="w-[250px] h-[350px] md:w-[280px] md:h-[400px] shadow-[0_20px_50px_rgba(255,123,84,0.3)] rounded-xl overflow-hidden glass-panel cursor-pointer border border-white/20"
+        className="w-[150px] h-[230px] sm:w-[190px] sm:h-[280px] md:w-[280px] md:h-[400px] shadow-[0_20px_50px_rgba(255,123,84,0.3)] rounded-xl overflow-hidden glass-panel cursor-pointer border border-white/20"
         onClick={() => onSelect(image)}
         style={{ 
-          z: 700, 
+          z: radius, 
           scale, 
           filter, 
           opacity 
@@ -206,6 +210,7 @@ export const Surprise: React.FC = () => {
   const parallaxX = useMotionValue(0);
   const parallaxY = useMotionValue(0);
   const speed = useRef(0.015);
+  const [carouselRadius, setCarouselRadius] = useState(getCarouselRadius);
 
   useAnimationFrame((_t, delta) => {
     if (isOpened && !selectedImage) {
@@ -214,8 +219,16 @@ export const Surprise: React.FC = () => {
   });
 
   useEffect(() => {
+    const handleResize = () => setCarouselRadius(getCarouselRadius());
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
     if (!isOpened) return;
     const handleMouseMove = (e: MouseEvent) => {
+      if (window.innerWidth < 768) return;
       const x = (window.innerWidth / 2 - e.pageX) / 60;
       const y = (window.innerHeight / 2 - e.pageY) / 60;
       parallaxX.set(x);
@@ -234,7 +247,7 @@ export const Surprise: React.FC = () => {
 
   return (
     <motion.section 
-      className="relative min-h-screen bg-[#0f0814] flex flex-col items-center justify-center overflow-hidden perspective-[1500px]"
+      className="relative min-h-[100dvh] bg-[#0f0814] flex flex-col items-center justify-center overflow-hidden perspective-[1500px] px-4"
       initial={{ opacity: 0, rotateX: 15, y: 100, scale: 0.95, transformPerspective: 1500 }}
       animate={{ opacity: 1, rotateX: 0, y: 0, scale: 1 }}
       exit={{ opacity: 0, filter: 'blur(20px)', scale: 1.1 }}
@@ -299,7 +312,7 @@ export const Surprise: React.FC = () => {
                 style={{ transformStyle: 'preserve-3d', rotateY: angle }}
               >
                 {images.map((src, i) => (
-                  <CarouselCard key={i} index={i} image={src} angleObj={angle} onSelect={setSelectedImage} />
+                  <CarouselCard key={i} index={i} image={src} angleObj={angle} radius={carouselRadius} onSelect={setSelectedImage} />
                 ))}
               </motion.div>
             </motion.div>
@@ -307,7 +320,7 @@ export const Surprise: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <div className="absolute top-16 z-30 text-center w-full pointer-events-none">
+      <div className="absolute top-10 sm:top-16 z-30 text-center w-full pointer-events-none px-4">
         <AnimatePresence mode="wait">
           {!isOpened ? (
             <motion.div
@@ -317,8 +330,8 @@ export const Surprise: React.FC = () => {
               exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
               transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
             >
-              <h2 className="text-3xl md:text-5xl font-serif text-glow-lavender mb-2 title-3d">A Magical Memory</h2>
-              <p className="text-white/60 uppercase tracking-widest text-sm">Tap to reveal the dream</p>
+              <h2 className="text-[clamp(2rem,9vw,3.5rem)] md:text-5xl font-serif text-glow-lavender mb-2 title-3d leading-tight">A Magical Memory</h2>
+              <p className="text-white/60 uppercase tracking-widest text-xs sm:text-sm">Tap to reveal the dream</p>
             </motion.div>
           ) : (
             <motion.div
@@ -327,8 +340,8 @@ export const Surprise: React.FC = () => {
               animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
               transition={{ duration: 2.5, delay: 2, ease: [0.19, 1, 0.22, 1] }}
             >
-              <h2 className="text-4xl md:text-6xl font-serif text-[#ffb085] mb-2 drop-shadow-[0_0_20px_rgba(255,176,133,0.8)] title-3d">Infinite Dreams</h2>
-              <p className="text-lg md:text-xl text-white/80 font-light max-w-xl mx-auto italic">
+              <h2 className="text-[clamp(2.3rem,10vw,4rem)] md:text-6xl font-serif text-[#ffb085] mb-2 drop-shadow-[0_0_20px_rgba(255,176,133,0.8)] title-3d leading-tight">Infinite Dreams</h2>
+              <p className="text-base md:text-xl text-white/80 font-light max-w-xl mx-auto italic">
                 Every moment a masterpiece.
               </p>
             </motion.div>
@@ -339,7 +352,7 @@ export const Surprise: React.FC = () => {
       <AnimatePresence>
         {isOpened && !selectedImage && (
           <motion.div 
-            className="absolute bottom-16 z-30 pointer-events-auto"
+            className="absolute bottom-8 sm:bottom-16 z-30 pointer-events-auto px-4"
             initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             exit={{ opacity: 0, y: 20 }}
@@ -377,8 +390,9 @@ export const Surprise: React.FC = () => {
                 className="max-w-full max-h-full object-contain rounded-xl shadow-[0_30px_100px_rgba(255,123,84,0.4)] border border-white/10 relative z-10"
               />
               <button 
-                className="absolute top-6 right-6 text-white/50 hover:text-white bg-white/5 hover:bg-white/20 rounded-full p-4 backdrop-blur-md transition-all z-20"
+                className="absolute top-3 right-3 sm:top-6 sm:right-6 text-white/70 hover:text-white bg-white/5 hover:bg-white/20 rounded-full px-4 py-3 backdrop-blur-md transition-all z-20"
                 onClick={() => setSelectedImage(null)}
+                aria-label="Close image"
               >
                 ✕
               </button>

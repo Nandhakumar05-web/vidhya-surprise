@@ -10,9 +10,18 @@
 }
 
 @layer base {
+  html {
+    @apply overflow-x-hidden;
+  }
+
   body {
     @apply bg-[#0a0514] text-white overflow-x-hidden antialiased;
     font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  #root {
+    min-height: 100dvh;
+    overflow-x: hidden;
   }
 }
 

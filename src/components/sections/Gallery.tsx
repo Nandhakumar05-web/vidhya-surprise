@@ -27,7 +27,7 @@ export const Gallery: React.FC = () => {
   return (
     <motion.section
       ref={containerRef}
-      className="relative min-h-[150vh] bg-[#0a0514] overflow-hidden"
+      className="relative min-h-[100dvh] md:min-h-[150vh] bg-[#0a0514] overflow-hidden"
       initial={{ opacity: 0, filter: 'blur(10px)' }}
       animate={{ opacity: 1, filter: 'blur(0px)' }}
       exit={{ opacity: 0, scale: 0.95, filter: 'blur(15px)' }}
@@ -37,41 +37,41 @@ export const Gallery: React.FC = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(43,18,76,0.8)_0%,rgba(10,5,20,1)_100%)]" />
       </div>
 
-      <div className="sticky top-0 h-screen flex flex-col items-center justify-center p-4">
+      <div className="relative md:sticky top-0 min-h-[100dvh] md:h-screen flex flex-col items-center justify-center px-4 py-24 sm:py-20">
         <motion.div
-          className="text-center z-20 mb-12"
+          className="text-center z-20 mb-8 md:mb-12"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
         >
-          <h2 className="text-3xl md:text-5xl font-serif text-glow mb-4">Beautiful Memories</h2>
-          <p className="text-white/60 font-light tracking-widest uppercase text-sm">Every moment is a treasure</p>
+          <h2 className="text-[clamp(2.25rem,10vw,3.25rem)] md:text-5xl font-serif text-glow mb-3 md:mb-4 leading-tight">Beautiful Memories</h2>
+          <p className="text-white/60 font-light tracking-widest uppercase text-xs sm:text-sm">Every moment is a treasure</p>
         </motion.div>
 
         {/* 3D Floating Gallery */}
-        <div className="w-full max-w-6xl mx-auto h-[60vh] relative perspective-[1200px] flex items-center justify-center gap-4 md:gap-8">
+        <div className="w-full max-w-6xl mx-auto h-[min(52dvh,520px)] md:h-[60vh] relative perspective-[1200px] flex items-center justify-center gap-2 sm:gap-4 md:gap-8">
           {/* Left Column */}
-          <motion.div style={{ y: y1 }} className="flex flex-col gap-8 w-1/3 mt-32">
+          <motion.div style={{ y: y1 }} className="flex flex-col gap-3 sm:gap-5 md:gap-8 w-1/3 mt-16 md:mt-32">
             <GalleryItem src={images[0]} delay={0.2} />
             <GalleryItem src={images[1]} delay={0.4} />
           </motion.div>
 
           {/* Center Column */}
-          <motion.div className="flex flex-col gap-8 w-1/3 z-10 scale-110">
+          <motion.div className="flex flex-col gap-3 sm:gap-5 md:gap-8 w-1/3 z-10 scale-105 md:scale-110">
             <GalleryItem src={images[2]} delay={0.1} />
             <GalleryItem src={images[3]} delay={0.3} />
           </motion.div>
 
           {/* Right Column */}
-          <motion.div style={{ y: y2 }} className="flex flex-col gap-8 w-1/3 -mt-32">
+          <motion.div style={{ y: y2 }} className="flex flex-col gap-3 sm:gap-5 md:gap-8 w-1/3 -mt-16 md:-mt-32">
             <GalleryItem src={images[4]} delay={0.5} />
             <GalleryItem src={images[5]} delay={0.6} />
           </motion.div>
         </div>
 
         <motion.div
-          className="mt-12 z-20"
+          className="mt-8 md:mt-12 z-20"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.8 }}

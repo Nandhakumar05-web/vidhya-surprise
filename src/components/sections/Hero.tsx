@@ -30,7 +30,7 @@ export const Hero: React.FC = () => {
   return (
     <motion.section
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0a0514]"
+      className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-[#0a0514]"
       initial={{ opacity: 0, rotateX: 15, y: 100, scale: 0.95, transformPerspective: 1200 }}
       animate={{ opacity: 1, rotateX: 0, y: 0, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9, rotateX: -15, y: -50 }}
@@ -56,11 +56,11 @@ export const Hero: React.FC = () => {
         />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 flex flex-col md:flex-row items-center justify-between gap-12">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-8 px-4 py-24 sm:px-6 md:gap-10 lg:flex-row lg:py-20">
 
         {/* Left Content */}
         <motion.div
-          className="flex-1 text-center md:text-left space-y-8"
+          className="flex-1 text-center lg:text-left space-y-6 sm:space-y-8"
           initial="hidden"
           animate="visible"
           variants={{
@@ -77,15 +77,15 @@ export const Hero: React.FC = () => {
               visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 1.2, ease: [0.23, 1, 0.32, 1] } }
             }}
           >
-            <h2 className="text-xl md:text-2xl text-[#E6B7A9] font-light tracking-widest uppercase mb-4">
+            <h2 className="text-sm sm:text-lg md:text-2xl text-[#E6B7A9] font-light tracking-widest uppercase mb-3 sm:mb-4">
               A Special Day
             </h2>
-            <h1 className="text-6xl md:text-8xl font-serif text-white mb-6 text-glow-lavender leading-tight title-3d">
+            <h1 className="text-[clamp(3rem,15vw,5.5rem)] lg:text-8xl font-serif text-white mb-4 sm:mb-6 text-glow-lavender leading-[0.95] title-3d">
               Happy <br />
               <span className="italic text-[#C8B6FF]">Birthday</span> <br />
               Vidhya
             </h1>
-            <p className="text-lg md:text-xl text-white/70 max-w-lg font-light leading-relaxed">
+            <p className="mx-auto max-w-[34rem] text-base text-white/70 font-light leading-relaxed sm:text-lg md:text-xl lg:mx-0">
               To a soul that shines brighter than the stars. May this year bring you as much joy and beauty as you bring into this world.
             </p>
           </motion.div>
@@ -95,7 +95,7 @@ export const Hero: React.FC = () => {
               hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
               visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 1.2, ease: [0.23, 1, 0.32, 1] } }
             }}
-            className="pt-8"
+            className="pt-2 sm:pt-8"
           >
             <CinematicButton onClick={unlockNext} glowColor="lavender">
               Unlock Next Memory
@@ -105,16 +105,16 @@ export const Hero: React.FC = () => {
 
         {/* Right Content - 3D Portrait Frame */}
         <motion.div
-          className="flex-1 flex justify-center perspective-[1200px]"
+          className="flex-1 flex w-full justify-center perspective-[1200px]"
           initial={{ opacity: 0, scale: 0.9, rotateY: 30, filter: 'blur(20px)' }}
           animate={{ opacity: 1, scale: 1, rotateY: 0, filter: 'blur(0px)' }}
           transition={{ duration: 1.3, delay: 0.3, ease: [0.23, 1, 0.32, 1] }}
         >
           <motion.div
             ref={cardRef}
-            className="relative premium-3d-card floating-glass"
+            className="relative premium-3d-card floating-glass max-w-full"
           >
-            <GlassCard glow className="w-[300px] h-[400px] md:w-[400px] md:h-[550px] p-4 flex flex-col relative z-20">
+            <GlassCard glow className="relative z-20 flex h-[min(58dvh,440px)] w-[min(78vw,320px)] flex-col p-3 sm:h-[500px] sm:w-[360px] sm:p-4 md:h-[550px] md:w-[400px]">
               <div className="flex-1 rounded-xl overflow-hidden bg-white/5 border border-white/10 relative">
                 {/* Placeholder for Vidhya's Image */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-[#2B124C] to-[#C8B6FF] opacity-30 mix-blend-overlay z-10" />

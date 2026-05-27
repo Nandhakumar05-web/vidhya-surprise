@@ -20,7 +20,7 @@ export const CinematicButton: React.FC<CinematicButtonProps> = ({
   return (
     <motion.button
       className={cn(
-        'relative px-8 py-4 rounded-full font-medium text-lg tracking-wider transition-all duration-500 overflow-hidden group',
+        'relative max-w-[calc(100vw-2rem)] rounded-full px-6 py-3.5 text-center text-base font-medium leading-snug tracking-wide transition-all duration-500 overflow-hidden group sm:px-8 sm:py-4 sm:text-lg sm:tracking-wider',
         'bg-white/10 backdrop-blur-md border border-white/20 text-white',
         glowClass,
         hoverGlowClass,

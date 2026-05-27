@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { motion, useAnimationFrame, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useAnimationFrame, useMotionValue, useTransform, AnimatePresence, type MotionValue } from 'framer-motion';
 import { useAppStore } from '../../store/useAppStore';
 import { CinematicButton } from '../ui/CinematicButton';
 
@@ -20,7 +20,7 @@ const images = [
   '/photo14.jpg',
 ];
 
-const CarouselCard = ({ index, image, angleObj, onSelect }: { index: number, image: string, angleObj: any, onSelect: (img: string) => void }) => {
+const CarouselCard = ({ index, image, angleObj, onSelect }: { index: number, image: string, angleObj: MotionValue<number>, onSelect: (img: string) => void }) => {
   const cardAngle = index * 36;
   
   const scale = useTransform(angleObj, (val: number) => {

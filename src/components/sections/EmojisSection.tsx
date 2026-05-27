@@ -27,7 +27,7 @@ export const EmojisSection: React.FC = () => {
   return (
     <motion.section
       ref={containerRef}
-      className="relative min-h-screen bg-[#0a0514] py-32 px-6 flex flex-col items-center justify-center overflow-hidden"
+      className="relative min-h-[100dvh] bg-[#0a0514] py-24 sm:py-32 px-4 sm:px-6 flex flex-col items-center justify-center overflow-hidden"
       initial={{ opacity: 0, rotateX: 15, y: 100, scale: 0.95, transformPerspective: 1200 }}
       animate={{ opacity: 1, rotateX: 0, y: 0, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9, rotateX: -15, y: -50 }}
@@ -43,19 +43,19 @@ export const EmojisSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           viewport={{ once: true }}
           transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
-          className="mb-20"
+          className="mb-10 sm:mb-16 md:mb-20"
         >
-          <h2 className="text-4xl md:text-6xl font-serif text-glow-lavender mb-6 title-3d">
+          <h2 className="text-[clamp(2.4rem,11vw,4rem)] md:text-6xl font-serif text-glow-lavender mb-4 sm:mb-6 title-3d leading-tight">
             Little Blessings
           </h2>
-          <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto font-light leading-relaxed italic">
+          <p className="text-base md:text-xl text-white/70 max-w-2xl mx-auto font-light leading-relaxed italic">
             "A collection of wishes, just for you."
           </p>
         </motion.div>
 
         <motion.div
           style={{ y }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 w-full"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-12 sm:mb-20 w-full"
         >
           {emojis.map((item, index) => (
             <motion.div
@@ -66,10 +66,10 @@ export const EmojisSection: React.FC = () => {
               transition={{ duration: 1.2, delay: index * 0.1, ease: [0.23, 1, 0.32, 1] }}
               className="premium-3d-card"
             >
-              <GlassCard glow className="p-8 h-full flex flex-col items-center justify-center text-center hover:bg-white/10 transition-colors duration-500">
-                <span className="text-6xl mb-6 filter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">{item.icon}</span>
-                <h3 className="text-2xl font-serif text-[#FFD66B] mb-3">{item.title}</h3>
-                <p className="text-white/60 font-light">{item.desc}</p>
+              <GlassCard glow className="h-full min-h-[180px] p-5 sm:p-6 md:p-8 flex flex-col items-center justify-center text-center hover:bg-white/10 transition-colors duration-500">
+                <span className="text-5xl sm:text-6xl mb-4 sm:mb-6 filter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">{item.icon}</span>
+                <h3 className="text-xl sm:text-2xl font-serif text-[#FFD66B] mb-3">{item.title}</h3>
+                <p className="text-sm sm:text-base text-white/60 font-light">{item.desc}</p>
               </GlassCard>
             </motion.div>
           ))}

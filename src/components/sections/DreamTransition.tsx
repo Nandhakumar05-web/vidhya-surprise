@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAppStore } from '../../store/useAppStore';
 import { CinematicButton } from '../ui/CinematicButton';
 import { GlassCard } from '../ui/GlassCard';
+import { seededValue } from '../../lib/utils';
 
 const transitionImages = [
   './photo1.jpg',
@@ -48,7 +49,7 @@ export const DreamTransition: React.FC = () => {
   return (
     <motion.section
       ref={containerRef}
-      className="relative min-h-screen bg-[#0a050f] flex flex-col items-center justify-center overflow-hidden"
+      className="relative min-h-[100dvh] bg-[#0a050f] flex flex-col items-center justify-center overflow-hidden px-4"
       initial={{ opacity: 0, filter: 'blur(20px)' }}
       animate={{ opacity: 1, filter: 'blur(0px)' }}
       exit={{ opacity: 0, scale: 1.1, filter: 'blur(30px)' }}
@@ -76,22 +77,22 @@ export const DreamTransition: React.FC = () => {
 
       {/* Title */}
       <motion.div
-        className="absolute top-16 z-20 text-center w-full pointer-events-none"
+        className="absolute top-8 sm:top-16 z-20 text-center w-full pointer-events-none px-4"
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5, delay: 0.5, ease: [0.19, 1, 0.22, 1] }}
       >
-        <h2 className="text-4xl md:text-6xl font-serif text-[#ffb085] mb-3 drop-shadow-[0_0_25px_rgba(255,176,133,0.6)]">
+        <h2 className="text-[clamp(2.1rem,10vw,4rem)] md:text-6xl font-serif text-[#ffb085] mb-2 sm:mb-3 drop-shadow-[0_0_25px_rgba(255,176,133,0.6)] leading-tight">
           A Floating Dream
         </h2>
-        <p className="text-white/50 font-light italic text-lg">
+        <p className="text-white/50 font-light italic text-sm sm:text-lg">
           Tap each portrait to drift through memories
         </p>
       </motion.div>
 
       {/* Image Counter */}
       <motion.div
-        className="absolute top-40 z-20 pointer-events-none"
+        className="absolute top-32 sm:top-40 z-20 pointer-events-none"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
@@ -100,7 +101,7 @@ export const DreamTransition: React.FC = () => {
           {transitionImages.map((_, i) => (
             <div
               key={i}
-              className={`w-8 h-1 rounded-full transition-all duration-700 ${
+              className={`w-6 sm:w-8 h-1 rounded-full transition-all duration-700 ${
                 i === activeIndex ? 'bg-[#ffb085] shadow-[0_0_10px_rgba(255,176,133,0.8)]' : 'bg-white/20'
               }`}
             />
@@ -109,7 +110,7 @@ export const DreamTransition: React.FC = () => {
       </motion.div>
 
       {/* 3D Layered Image Container */}
-      <div className="relative z-10 w-[320px] h-[460px] md:w-[400px] md:h-[580px]">
+      <div className="relative z-10 mt-12 w-[min(76vw,320px)] h-[min(52dvh,440px)] sm:h-[460px] md:w-[400px] md:h-[580px]">
         <motion.div
           className="w-full h-full"
           style={{
@@ -190,8 +191,8 @@ export const DreamTransition: React.FC = () => {
                   key={i}
                   className="absolute w-1 h-1 bg-[#ffb085] rounded-full"
                   style={{
-                    top: `${15 + Math.random() * 70}%`,
-                    left: `${10 + Math.random() * 80}%`,
+                    top: `${15 + seededValue(i + 1) * 70}%`,
+                    left: `${10 + seededValue(i + 11) * 80}%`,
                   }}
                   animate={{
                     opacity: [0, 1, 0],
@@ -199,9 +200,9 @@ export const DreamTransition: React.FC = () => {
                     y: [0, -20, -40],
                   }}
                   transition={{
-                    duration: 2 + Math.random() * 2,
+                    duration: 2 + seededValue(i + 21) * 2,
                     repeat: Infinity,
-                    delay: Math.random() * 3,
+                    delay: seededValue(i + 31) * 3,
                   }}
                 />
               ))}
@@ -212,12 +213,12 @@ export const DreamTransition: React.FC = () => {
 
       {/* Bottom Controls */}
       <motion.div
-        className="absolute bottom-16 z-20 flex flex-col items-center gap-6"
+        className="absolute bottom-8 sm:bottom-16 z-20 flex flex-col items-center gap-4 sm:gap-6 px-4"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, delay: 1, ease: [0.19, 1, 0.22, 1] }}
       >
-        <p className="text-white/40 text-sm tracking-widest uppercase">
+        <p className="text-white/40 text-xs sm:text-sm tracking-widest uppercase">
           {isLastImage ? 'Journey complete' : `${activeIndex + 1} / ${transitionImages.length}`}
         </p>
 
