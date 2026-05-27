@@ -14,7 +14,7 @@ import { FinalCelebration } from './components/sections/FinalCelebration';
 
 const App: React.FC = () => {
   const currentSection = useAppStore((state) => state.currentSection);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -42,69 +42,51 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentSection]);
 
-  // Initialize music on component mount
+  // Initialize the audio element once
   useEffect(() => {
-    if (audioRef.current) {
-      const musicPath = sectionMusicMap[currentSection];
-      audioRef.current.src = musicPath;
-      // Auto-play on initial load
-      setTimeout(() => {
-        if (audioRef.current && !isMuted) {
-          audioRef.current.play().catch(e => console.log('Audio play prevented:', e));
-        }
-      }, 200);
-    }
-  }, []);
-
-  // Handle section music change and autoplay
-  useEffect(() => {
-    if (audioRef.current && currentSection !== 'intro') {
-      // Stop current music and switch to new section's music
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-
-      // Load new section music
-      const musicPath = sectionMusicMap[currentSection];
-      audioRef.current.src = musicPath;
-
-      // Auto-play music immediately
-      audioRef.current.play().catch(e => console.log('Audio play prevented:', e));
-    }
+    if (!audioRef.current) return;
+    const musicPath = sectionMusicMap[currentSection];
+    audioRef.current.src = musicPath;
+    audioRef.current.muted = true;
+    audioRef.current.preload = 'auto';
   }, [currentSection]);
 
-  // Handle mute toggle
+  // Change music when the section changes and the audio is already unmuted
   useEffect(() => {
-    if (audioRef.current && !isMuted) {
-      audioRef.current.play().catch(e => console.log('Audio play prevented:', e));
-    } else if (audioRef.current) {
-      audioRef.current.pause();
-    }
-  }, [isMuted]);
+    if (!audioRef.current || isMuted) return;
+
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+    const musicPath = sectionMusicMap[currentSection];
+    audioRef.current.src = musicPath;
+    audioRef.current.muted = false;
+    audioRef.current.play().catch((e) => console.log('Audio play prevented:', e));
+  }, [currentSection, isMuted]);
 
   const toggleAudio = () => {
-    if (audioRef.current) {
-      if (isMuted) {
-        audioRef.current.play().catch(e => console.log('Audio play prevented:', e));
-      } else {
-        audioRef.current.pause();
-      }
-      setIsMuted(!isMuted);
+    if (!audioRef.current) return;
+
+    if (isMuted) {
+      audioRef.current.muted = false;
+      audioRef.current.play().catch((e) => console.log('Audio play prevented:', e));
+      setIsMuted(false);
+    } else {
+      audioRef.current.pause();
+      audioRef.current.muted = true;
+      setIsMuted(true);
     }
   };
 
   return (
     <div className="bg-[#0a0514] text-white min-h-screen font-sans">
       {/* Section-specific background music */}
-      <audio
-        ref={audioRef}
-        loop
-        preload="auto"
-      />
+      <audio ref={audioRef} loop muted={isMuted} playsInline />
 
-      {/* Floating Audio Toggle */}
+      {/* Floating Audio Mute Button */}
       <motion.button
         className="fixed top-6 right-6 z-[100] w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors shadow-lg"
         onClick={toggleAudio}
+        title={isMuted ? 'Unmute music' : 'Mute music'}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.8 }}
@@ -127,3 +109,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
