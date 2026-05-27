@@ -57,6 +57,14 @@ export const IntroDoor: React.FC = () => {
         >
           Tap the center to unlock
         </motion.p>
+        <motion.p
+          className="text-white/50 tracking-widest uppercase text-xs mt-3"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, delay: 0.8 }}
+        >
+          🔊 Click the play button for music
+        </motion.p>
       </div>
 
       {/* 3D Parallel Photos Container */}
