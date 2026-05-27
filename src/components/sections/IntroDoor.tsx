@@ -36,9 +36,9 @@ export const IntroDoor: React.FC = () => {
       exit={{ opacity: 0, filter: 'blur(20px)' }}
       transition={{ duration: 1 }}
     >
-      {/* Dynamic Background Glow */}
+      {/* Dynamic Background Glow - Optimized */}
       <div className="absolute inset-0 pointer-events-none flex justify-center items-center">
-        <div className="w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] rounded-full bg-[#2B124C]/30 blur-[120px] animate-pulse" />
+        <div className="w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] rounded-full bg-[#2B124C]/30 blur-[80px]" style={{ animation: 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite' }} />
       </div>
 
       <div className="absolute top-16 z-20 text-center w-full pointer-events-none">

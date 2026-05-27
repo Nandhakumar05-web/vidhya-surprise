@@ -36,25 +36,23 @@ export const Hero: React.FC = () => {
       exit={{ opacity: 0, scale: 0.9, rotateX: -15, y: -50 }}
       transition={{ duration: 1.1, ease: [0.23, 1, 0.32, 1] }}
     >
-      {/* Background glowing effects */}
+      {/* Background glowing effects - Optimized */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-[#2B124C]/40 blur-[120px]"
+          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-[#2B124C]/40 blur-[100px]"
           animate={{
-            x: [0, 50, -50, 0],
-            y: [0, -50, 50, 0],
-            scale: [1, 1.2, 0.8, 1]
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-[#C8B6FF]/20 blur-[150px]"
-          animate={{
-            x: [0, -60, 60, 0],
-            y: [0, 60, -60, 0],
-            scale: [1, 0.9, 1.1, 1]
+            x: [0, 30, -30, 0],
+            y: [0, -30, 30, 0]
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-[#C8B6FF]/20 blur-[120px]"
+          animate={{
+            x: [0, -40, 40, 0],
+            y: [0, 40, -40, 0]
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
         />
       </div>
 

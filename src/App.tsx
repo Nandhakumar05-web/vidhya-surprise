@@ -42,7 +42,7 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentSection]);
 
-  // Handle section music change
+  // Handle section music change and autoplay
   useEffect(() => {
     if (audioRef.current) {
       // Stop current music and switch to new section's music
@@ -53,12 +53,23 @@ const App: React.FC = () => {
       const musicPath = sectionMusicMap[currentSection];
       audioRef.current.src = musicPath;
 
-      // Play if not muted
-      if (!isMuted) {
-        audioRef.current.play().catch(e => console.log('Audio play prevented:', e));
-      }
+      // Auto-play music
+      setTimeout(() => {
+        if (audioRef.current && !isMuted) {
+          audioRef.current.play().catch(e => console.log('Audio play prevented:', e));
+        }
+      }, 100);
     }
-  }, [currentSection, isMuted]);
+  }, [currentSection]);
+
+  // Handle mute toggle
+  useEffect(() => {
+    if (audioRef.current && !isMuted) {
+      audioRef.current.play().catch(e => console.log('Audio play prevented:', e));
+    } else if (audioRef.current) {
+      audioRef.current.pause();
+    }
+  }, [isMuted]);
 
   const toggleAudio = () => {
     if (audioRef.current) {
