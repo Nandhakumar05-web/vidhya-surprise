@@ -42,9 +42,23 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentSection]);
 
-  // Handle section music change and autoplay
+  // Initialize music on component mount
   useEffect(() => {
     if (audioRef.current) {
+      const musicPath = sectionMusicMap[currentSection];
+      audioRef.current.src = musicPath;
+      // Auto-play on initial load
+      setTimeout(() => {
+        if (audioRef.current && !isMuted) {
+          audioRef.current.play().catch(e => console.log('Audio play prevented:', e));
+        }
+      }, 200);
+    }
+  }, []);
+
+  // Handle section music change and autoplay
+  useEffect(() => {
+    if (audioRef.current && currentSection !== 'intro') {
       // Stop current music and switch to new section's music
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
@@ -53,12 +67,8 @@ const App: React.FC = () => {
       const musicPath = sectionMusicMap[currentSection];
       audioRef.current.src = musicPath;
 
-      // Auto-play music
-      setTimeout(() => {
-        if (audioRef.current && !isMuted) {
-          audioRef.current.play().catch(e => console.log('Audio play prevented:', e));
-        }
-      }, 100);
+      // Auto-play music immediately
+      audioRef.current.play().catch(e => console.log('Audio play prevented:', e));
     }
   }, [currentSection]);
 

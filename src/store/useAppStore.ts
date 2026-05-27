@@ -11,14 +11,14 @@ interface AppState {
 const sectionFlow: SectionState[] = ['intro', 'hero', 'gallery', 'surprise', 'emojis', 'wishes', 'finale', 'dream'];
 
 export const sectionMusicMap: Record<SectionState, string> = {
-  intro: '/music/laugh.mp3',
-  hero: '/music/gallery.mp3',
+  intro: '/music/intro.mp3',
+  hero: '/music/intro.mp3',
   gallery: '/music/gallery.mp3',
-  surprise: '/music/surprise.mp3',
-  emojis: '/music/emoji.mp3',
-  wishes: '/music/wish.mp3',
-  finale: '/music/final.mp3',
-  dream: '/music/dream.mp3',
+  surprise: '/music/laugh.mp3',
+  emojis: '/music/laugh.mp3',
+  wishes: '/music/intro.mp3',
+  finale: '/music/intro.mp3',
+  dream: '/music/intro.mp3',
 };
 
 export const useAppStore = create<AppState>((set) => ({
